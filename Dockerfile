@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 
-RUN apt-get update && install -y \
+RUN apt-get update && apt-get install -y \
     apt-utils aptitude openssh-server supervisor git \
     cmake g++ libboost-all-dev libopenblas-dev opencl-headers \
     ocl-icd-libopencl1 ocl-icd-opencl-dev zlib1g-dev qt5-default qt5-qmake
@@ -12,6 +12,7 @@ RUN git submodule update --init --recursive
 WORKDIR /src/build/
 RUN CXX=g++ CC=gcc cmake -DUSE_CPU_ONLY=1 ..
 RUN cmake --build . --target leelaz --config Release -- -j2
+RUN mv leelaz /usr/local/bin
 
 RUN mkdir -p /var/run/sshd
 RUN mkdir -p /root/.ssh
